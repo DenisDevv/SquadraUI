@@ -32,7 +32,9 @@ public class HelloController {
     private TextArea numeroGiocatore1;
     @FXML
     private ListView<String> listaGiocatori;
-
+    @FXML
+    private CheckBox capitano;
+    private Boolean capitanoAvaible = true;
     @FXML
     protected void aggiungiGiocatore() {
         popIn(inputAggGiocatore);
@@ -67,6 +69,14 @@ public class HelloController {
         int index = Integer.parseInt(numeroGiocatore.getText());
         giocatori[index].setNome(nomeGiocatore1.getText());
         giocatori[index].setGoals(Integer.parseInt(numeGoals1.getText()));
+        giocatori[index].setCapitano(capitano.isSelected());
+        if (capitano.isSelected()) {
+            capitanoAvaible = false;
+        }
+        if (giocatori[index].getCapitano() && !capitano.isSelected()) {
+            capitanoAvaible = false;
+        }
+        capitano.setSelected(false);
         nomeGiocatore1.setText("");
         numeGoals1.setText("");
         numeroGiocatore.setText("");
@@ -81,6 +91,7 @@ public class HelloController {
     @FXML
     protected void modificaGiocatore() {
         popIn(inputModGiocatore);
+        capitano.setDisable(true);
     }
 
     @FXML
@@ -89,7 +100,15 @@ public class HelloController {
         popOut(inputModGiocatore);
         popOut(inputEliGiocatore);
     }
-
+    @FXML
+    protected void capitano() {
+        if (numeroGiocatore.getText() == null || numeroGiocatore.getText().equals("")) {
+            return;
+        }
+        if (capitanoAvaible)
+            capitano.setDisable(false);
+        else capitano.setDisable(!giocatori[Integer.parseInt(numeroGiocatore.getText())].getCapitano());
+    }
     public void popOut(Pane pane) {
         ScaleTransition st = new ScaleTransition(Duration.millis(100), pane);
         st.setFromX(1);
@@ -126,7 +145,7 @@ public class HelloController {
                 ObservableList<String> items = FXCollections.observableArrayList();
                 for (int j = 0; j < giocatori.length; j++) {
                     if (giocatori[j] != null) {
-                        items.add(j + " - " + giocatori[j].getNome() + " - " + giocatori[j].getGoals());
+                        items.add(j + " - " + giocatori[j].getNome() + " - " + giocatori[j].getGoals() + " - " + giocatori[j].getCapitano());
                     }
                 }
                 listaGiocatori.setItems(items);
