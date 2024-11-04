@@ -8,9 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.util.Arrays;
-
-public class HelloController {
+public class Funzioni {
     Giocatore[] giocatori = new Giocatore[11];
     @FXML
     private Pane inputAggGiocatore;
@@ -69,13 +67,14 @@ public class HelloController {
         int index = Integer.parseInt(numeroGiocatore.getText());
         giocatori[index].setNome(nomeGiocatore1.getText());
         giocatori[index].setGoals(Integer.parseInt(numeGoals1.getText()));
+        if (giocatori[index].getCapitano() && !capitano.isSelected()) {
+            capitanoAvaible = true;
+        }
         giocatori[index].setCapitano(capitano.isSelected());
         if (capitano.isSelected()) {
             capitanoAvaible = false;
         }
-        if (giocatori[index].getCapitano() && !capitano.isSelected()) {
-            capitanoAvaible = false;
-        }
+
         capitano.setSelected(false);
         nomeGiocatore1.setText("");
         numeGoals1.setText("");
@@ -107,7 +106,9 @@ public class HelloController {
         }
         if (capitanoAvaible)
             capitano.setDisable(false);
-        else capitano.setDisable(!giocatori[Integer.parseInt(numeroGiocatore.getText())].getCapitano());
+        else {
+            capitano.setDisable(!giocatori[Integer.parseInt(numeroGiocatore.getText())].getCapitano());
+        };
     }
     public void popOut(Pane pane) {
         ScaleTransition st = new ScaleTransition(Duration.millis(100), pane);

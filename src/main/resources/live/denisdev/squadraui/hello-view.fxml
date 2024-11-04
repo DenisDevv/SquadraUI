@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" minHeight="900.0" minWidth="1090.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="live.denisdev.squadraui.HelloController">
+<VBox alignment="CENTER" minHeight="900.0" minWidth="1090.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="live.denisdev.squadraui.Funzioni">
    <children>
       <Pane minHeight="900.0" minWidth="1090.0" prefHeight="900.0" prefWidth="1090.0" style="-fx-background-color: #181818;">
          <children>
