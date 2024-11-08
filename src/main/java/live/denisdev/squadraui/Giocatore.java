@@ -9,6 +9,9 @@ public class Giocatore {
         capitano = false;
         setGoals(goals);
     }
+    public Giocatore () {
+        this("Sconosciuto", 0);
+    }
     public String getNome() {
         return nome;
     }

@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Funzioni {
-    Giocatore[] giocatori = new Giocatore[11];
+    private Squadra squadra = new Squadra("Sconosciuto", "Sconosciuto");
     @FXML
     private Pane inputAggGiocatore;
     @FXML
@@ -32,7 +32,7 @@ public class Funzioni {
     private ListView<String> listaGiocatori;
     @FXML
     private CheckBox capitano;
-    private Boolean capitanoAvaible = true;
+    private Boolean capitanoAvailable = true;
     @FXML
     protected void aggiungiGiocatore() {
         popIn(inputAggGiocatore);
@@ -43,7 +43,7 @@ public class Funzioni {
         String nome = nomeGiocatore.getText();
         int i = ultimoDisponibile();
         if (i != -1) {
-            giocatori[i] = new Giocatore(nome, Integer.parseInt(numeGoals.getText()));
+            squadra.creaGiocatore(nome, Integer.parseInt(numeGoals.getText()), i);
         }
         nomeGiocatore.setText("");
         numeGoals.setText("");
@@ -55,8 +55,7 @@ public class Funzioni {
         int index = Integer.parseInt(numeroGiocatore1.getText());
         int x = ultimoDisponibile()-1;
         if (x != -1) {
-            giocatori[index] = giocatori[x];
-            giocatori[x] = null;
+            squadra.eliminaGiocatore(index, x);
         }
         numeroGiocatore1.setText("");
         popOut(inputEliGiocatore);
@@ -65,14 +64,14 @@ public class Funzioni {
     @FXML
     protected void confermaModGiocatore() {
         int index = Integer.parseInt(numeroGiocatore.getText());
-        giocatori[index].setNome(nomeGiocatore1.getText());
-        giocatori[index].setGoals(Integer.parseInt(numeGoals1.getText()));
-        if (giocatori[index].getCapitano() && !capitano.isSelected()) {
-            capitanoAvaible = true;
+        squadra.giocatori[index].setNome(nomeGiocatore1.getText());
+        squadra.giocatori[index].setGoals(Integer.parseInt(numeGoals1.getText()));
+        if (squadra.giocatori[index].getCapitano() && !capitano.isSelected()) {
+            capitanoAvailable = true;
         }
-        giocatori[index].setCapitano(capitano.isSelected());
+        squadra.giocatori[index].setCapitano(capitano.isSelected());
         if (capitano.isSelected()) {
-            capitanoAvaible = false;
+            capitanoAvailable = false;
         }
 
         capitano.setSelected(false);
@@ -104,10 +103,10 @@ public class Funzioni {
         if (numeroGiocatore.getText() == null || numeroGiocatore.getText().equals("")) {
             return;
         }
-        if (capitanoAvaible)
+        if (capitanoAvailable)
             capitano.setDisable(false);
         else {
-            capitano.setDisable(!giocatori[Integer.parseInt(numeroGiocatore.getText())].getCapitano());
+            capitano.setDisable(!squadra.giocatori[Integer.parseInt(numeroGiocatore.getText())].getCapitano());
         };
     }
     public void popOut(Pane pane) {
@@ -132,8 +131,8 @@ public class Funzioni {
     }
 
     public int ultimoDisponibile() {
-        for (int i = 0; i < giocatori.length; i++) {
-            if (giocatori[i] == null) {
+        for (int i = 0; i < squadra.giocatori.length; i++) {
+            if (squadra.giocatori[i] == null) {
                 return i;
             }
         }
@@ -141,12 +140,12 @@ public class Funzioni {
     }
 
     public void aggiornaLista() {
-        for (Giocatore giocatore : giocatori) {
+        for (Giocatore giocatore : squadra.giocatori) {
             if (giocatore != null) {
                 ObservableList<String> items = FXCollections.observableArrayList();
-                for (int j = 0; j < giocatori.length; j++) {
-                    if (giocatori[j] != null) {
-                        items.add(j + " - " + giocatori[j].getNome() + " - " + giocatori[j].getGoals() + " - " + giocatori[j].getCapitano());
+                for (int j = 0; j < squadra.giocatori.length; j++) {
+                    if (squadra.giocatori[j] != null) {
+                        items.add(j + " - " + squadra.giocatori[j].getNome() + " - " + squadra.giocatori[j].getGoals() + " - " + squadra.giocatori[j].getCapitano());
                     }
                 }
                 listaGiocatori.setItems(items);
